@@ -82,6 +82,7 @@ class Form extends React.Component{
                                     onChange={handleChange} 
                                     onBlur={handleBlur}
                                     value={description}
+                                    autoComplete="off"
                                 />
                                 {desc && <Error>{desc}</Error>}
                             </DivGroup>

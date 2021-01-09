@@ -9,7 +9,7 @@ export const ModalContent = styled.div`
     height: fit-content;
     width: 60%;
     margin: auto;
-    padding: 24px;
+    padding: 32px 24px;
     border-radius: 5px;
     :focus,
     :active{

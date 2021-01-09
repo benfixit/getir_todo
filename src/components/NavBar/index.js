@@ -8,8 +8,8 @@ const NavBar = props => {
     return (
         <NavWrapper>
             <HeaderText>Getir Todo</HeaderText>
-            <AddTask onClick={onClickAddTask}>
-                <FaPlusCircle scale={'2x'} />
+            <AddTask data-testid={'addTask'} onClick={onClickAddTask}>
+                <FaPlusCircle />
             </AddTask>
         </NavWrapper>
     )

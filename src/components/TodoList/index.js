@@ -66,7 +66,7 @@ class TodoList extends React.Component{
                             return (
                                 <Todo key={todo.id} todo={todo} />
                             )
-                        }) : <NoAvailableTodos>You do not have any Todos for the selected date.</NoAvailableTodos>}
+                        }) : <NoAvailableTodos>You do not have any todos for the selected date.</NoAvailableTodos>}
                     </ListContent>
                 </StyledList>
                 <StyledDate>
