@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import store from './store'
+import storeFactory from './store'
 import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+
+const initialState = {
+  todos: []
+}
+
+const store = storeFactory(initialState)
 
 ReactDOM.render(
   <React.StrictMode>
