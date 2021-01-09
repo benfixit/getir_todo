@@ -20,6 +20,12 @@ export const AddTask = styled.span`
     cursor: pointer;
     font-weight: bold;
     color: #5D3EBC;
+    border-radius: 50%;
+
+    :hover {
+        color: #3b1c0a;
+    }
+
     > svg {
         width: 24px;
         height: 24px;

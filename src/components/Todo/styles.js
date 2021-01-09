@@ -11,18 +11,29 @@ export const StyledLi = styled.li`
     }
     > p {
         > span {
+            cursor: pointer;
             > svg {
                 width: 20px;
                 height: 20px;
             }
         }
-        > span:first-child{
-            margin-right: 8px;
-            color: #cc0000;
-        }
-        > span:last-child{
-            font-weight: bolder;
-            color: ${props => props.status === TODO_STATUS.COMPLETE ? '#7CDFA9' : '#b0b0b0'};
-        }
+    }
+`
+
+export const StyledP = styled.p``
+
+export const TrashSpan = styled.span`
+    margin-right: 8px;
+    color: #cc0000;
+    :hover{
+        color: #990000;
+    }
+`
+
+export const CheckSpan = styled.span`
+    font-weight: bolder;
+    color: ${props => props.status === TODO_STATUS.COMPLETE ? '#7CDFA9' : '#b0b0b0'};
+    :hover{
+        color: #7CDFA9;
     }
 `

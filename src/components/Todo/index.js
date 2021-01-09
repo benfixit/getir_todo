@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { FaTrashAlt, FaRegCircle, FaCheck } from "react-icons/fa";
-import { StyledLi } from './styles'
+import { StyledLi, StyledP, TrashSpan, CheckSpan } from './styles'
 import { removeTodo, completeTodo } from '../../actions/todos';
 import { TODO_STATUS } from '../../utils/constants'
 
@@ -12,10 +12,15 @@ const Todo = props => {
         return (
             <StyledLi status={status}>
                 {description}
-                <p>
-                    {isIncomplete && <span onClick={() => onRemove(id)}><FaTrashAlt /></span>}
-                    <span onClick={isIncomplete ? () => onComplete(id) : () => {}}>{isIncomplete ? <FaCheck /> : <FaRegCircle />}</span>
-                </p>
+                <StyledP>
+                    {isIncomplete && <TrashSpan onClick={() => onRemove(id)}><FaTrashAlt /></TrashSpan>}
+                    <CheckSpan 
+                        onClick={isIncomplete ? () => onComplete(id) : () => {}}
+                        status={status}
+                    >
+                        {isIncomplete ? <FaCheck /> : <FaRegCircle />}
+                    </CheckSpan>
+                </StyledP>
             </StyledLi>
         )
 }

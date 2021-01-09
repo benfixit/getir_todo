@@ -38,6 +38,13 @@ export const Button = styled.button`
     padding: 8px;
     border-radius: 3px;
     border: none;
+    cursor: pointer;
+`
+
+export const AddButton = styled(Button)`
+    :hover {
+        background-color: #3b1c0a;
+    }
 `
 
 export const CancelButton = styled(Button)`
@@ -45,6 +52,10 @@ export const CancelButton = styled(Button)`
     color: #5D3EBC;
     border: thin solid #5D3EBC;
     margin-right: 24px;
+    :hover{
+        color: #3b1c0a;
+        border-color: #3b1c0a;
+    }
 `
 
 export const StyledForm = styled.form`

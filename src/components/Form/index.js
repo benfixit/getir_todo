@@ -8,7 +8,7 @@ import {
     DivGroup,
     Label,
     StyledInput,
-    Button,
+    AddButton,
     CancelButton,
     ButtonWrapper,
     StyledForm,
@@ -112,7 +112,7 @@ class Form extends React.Component{
                             </DivGroup>
                             <ButtonWrapper>
                                 <CancelButton type="button" onClick={onModalClose}>Cancel</CancelButton>
-                                <Button type="submit">Add Todo</Button>
+                                <AddButton type="submit">Add Todo</AddButton>
                             </ButtonWrapper>
                         </StyledForm>
                     )
