@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Modal as MaterialModal, Fade, Backdrop } from '@material-ui/core'
 import Form from '../Form'
 import { ModalContent } from './styles';
@@ -22,6 +23,11 @@ const Modal = props => {
             </Fade>
         </MaterialModal>
     )
+}
+
+Modal.propTypes = {
+    open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired
 }
 
 export default Modal

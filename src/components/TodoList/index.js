@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { isSameDay, format } from 'date-fns'
 import Todo from '../Todo'
@@ -83,5 +84,17 @@ class TodoList extends React.Component{
 const mapStateToProps = state => ({
     todos: state.todos
 })
+
+TodoList.propTypes = {
+    todos: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            description: PropTypes.string,
+            startDate: PropTypes.instanceOf(Date),
+            endDate: PropTypes.instanceOf(Date),
+            status: PropTypes.string
+        })
+    ).isRequired
+}
 
 export default connect(mapStateToProps, null)(TodoList);
