@@ -13,8 +13,9 @@ const Todo = props => {
             <StyledLi status={status}>
                 {description}
                 <StyledP>
-                    {isIncomplete && <TrashSpan onClick={() => onRemove(id)}><FaTrashAlt /></TrashSpan>}
+                    {isIncomplete && <TrashSpan data-testid={'removeTodo'} onClick={() => onRemove(id)}><FaTrashAlt /></TrashSpan>}
                     <CheckSpan 
+                        data-testid={'completeAction'}
                         onClick={isIncomplete ? () => onComplete(id) : () => {}}
                         status={status}
                     >
