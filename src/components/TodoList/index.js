@@ -78,7 +78,7 @@ class TodoList extends React.Component{
                             <Fragment>
                                 {loading ? (
                                     <ProgressWrapper>
-                                        <CircularProgress color="inherit" />
+                                        <CircularProgress color="inherit" data-testid="loadingTodos" />
                                     </ProgressWrapper>
                                 ) : (
                                     displayedTodos.length > 0 ? displayedTodos.map(todo => {

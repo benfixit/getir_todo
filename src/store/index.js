@@ -1,6 +1,6 @@
 import storeFactory from './factory'
 
-export const initialState = { todos: [], error: null }
+export const initialState = { todos: [] }
 
 // Set up local storage
 if(!localStorage.getItem('todo_store')){

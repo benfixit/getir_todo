@@ -23,7 +23,7 @@ export const complete = (todos, id) => {
 /**
  * This function generates a random number between 500 and 1000 exclusive
  */
-export const generateRandomNumber = () => {
+export const generateRandomDelay = () => {
     const rand = 1 + Math.random();
     
     return 500 * (parseFloat(rand.toFixed(2)))

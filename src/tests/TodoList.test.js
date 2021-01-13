@@ -1,35 +1,23 @@
-import { render, screen } from './utils';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import { format } from 'date-fns';
-import { v4 } from 'uuid';
+import { StateMock } from '@react-mock/state';
+import { render, screen } from './utils';
 import TodoList from '../components/TodoList';
-import { TODO_STATUS } from '../utils/constants';
+import { todos as mockTodos } from './__mocks__/todos';
 
-test('renders today\'s name and empty TodoList text', () => {
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+test('renders today\'s name and loading spinner', () => {
     const dayName = format(new Date(), 'EEEE');
     const todos = [];
-    render(<TodoList />, { initialState: { todos } })
-    expect(screen.getByText(dayName)).toBeInTheDocument()
-    expect(screen.getByText(/You do not have any todos for the selected date./i)).toBeInTheDocument()
-})
+    const initialState = { todos };
+    const store = mockStore(initialState);
+    
+    const fetchTodos = jest.fn();
+    render(<TodoList fetchTodos={fetchTodos} />, { initialState, store })
 
-test('renders todo list', () => {
-    const todos = [
-        {
-            id: v4(),
-            description: 'Test Todo 1',
-            startDate: new Date(),
-            endDate: new Date(),
-            status: TODO_STATUS.COMPLETE
-        },
-        {
-            id: v4(),
-            description: 'Test Todo 2',
-            startDate: new Date(),
-            endDate: new Date(),
-            status: TODO_STATUS.INCOMPLETE
-        }
-    ]
-    render(<TodoList />, { initialState: { todos } })
-    expect(screen.getByText(/Test Todo 1/i)).toBeInTheDocument()
-    expect(screen.getByText(/Test Todo 2/i)).toBeInTheDocument()
+    expect(screen.getByText(dayName)).toBeInTheDocument()
+    expect(screen.getByTestId('loadingTodos')).toBeInTheDocument()
 })

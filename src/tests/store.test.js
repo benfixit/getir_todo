@@ -1,50 +1,64 @@
-import storeFactory from '../store/factory'
-import { addTodo, removeTodo } from '../actions/todos'
-import { TODO_STATUS } from '../utils/constants'
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { mockLocalStorage } from './__mocks__/localStorage';
+import { todos, todo as mockTodo } from './__mocks__/todos';
+import { addTodo, fetchTodos, completeTodo, removeTodo } from '../actions/todos';
+import { TODO_ACTIONS } from '../utils/constants';
 
-describe('Add Todo', () => {
-    let store
+const { getItemMock } = mockLocalStorage();
+
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+describe('Test fetch todos action creator', () => {
+    let store, todo
     beforeAll(() => {
-        store = storeFactory({ todos: [] })
-        store.dispatch(addTodo({
-            description: 'Test Todo 1',
-            startDate: new Date(),
-            endDate: new Date(),
-            status: TODO_STATUS.INCOMPLETE
-        }))
+        todo = mockTodo
+    })
+
+    beforeEach(() => {
+        const initialState = { todos };
+        store = mockStore(initialState);
+        getItemMock.mockReturnValue(JSON.stringify(initialState));
     })
     
-    test('should add a new todo', () => {
-        expect(store.getState().todos.length).toBe(1)
-    })
-    
-    test('should add a unique guid id', () => {
-        expect(store.getState().todos[0].id.length).toBe(36)
-    })
-    
-    test('should set the status to incomplete', () => {
-        expect(store.getState().todos[0].status).toBe("INCOMPLETE")
-    })
-})
+    test('expect fetch todos action to be dispatched', () => {
+        const expectedActions = [TODO_ACTIONS.FETCH_TODOS]
 
-describe('Remove Todo', () => {
-    let store
-    beforeAll(() => {
-        store = storeFactory({ todos: [] })
-        store.dispatch(addTodo({
-            description: 'Test Todo 1',
-            startDate: new Date(),
-            endDate: new Date(),
-            status: TODO_STATUS.INCOMPLETE
-        }))
+        return store.dispatch(fetchTodos()).then(() => {
+            const actualActions = store.getActions().map(action => action.type)
+
+            expect(actualActions).toEqual(expectedActions)
+        })
     })
 
-    test('should remove todo', () => {
-        expect(store.getState().todos.length).toBe(1)
+    test('expect add todo action to be dispatched', () => {
+        const expectedActions = [TODO_ACTIONS.ADD_TODO]
 
-        const todoId = store.getState().todos[0].id;
-        store.dispatch(removeTodo(todoId));
+        return store.dispatch(addTodo(todo)).then(() => {
+            const actualActions = store.getActions().map(action => action.type)
 
-        expect(store.getState().todos.length).toBe(0)
+            expect(actualActions).toEqual(expectedActions)
+        })
+    })
+
+    test('expect remove todo action to be dispatched', () => {
+        const expectedActions = [TODO_ACTIONS.REMOVE_TODO]
+
+        return store.dispatch(removeTodo(todo.id)).then(() => {
+            const actualActions = store.getActions().map(action => action.type)
+
+            expect(actualActions).toEqual(expectedActions)
+        })
+    })
+
+    test('expect complete todo action to be dispatched', () => {
+        const expectedActions = [TODO_ACTIONS.COMPLETE_TODO]
+
+        return store.dispatch(completeTodo(todo.id)).then(() => {
+            const actualActions = store.getActions().map(action => action.type)
+
+            expect(actualActions).toEqual(expectedActions)
+        })
     })
 })

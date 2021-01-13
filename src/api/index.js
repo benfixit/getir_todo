@@ -1,4 +1,4 @@
-import { add, remove, complete, generateRandomNumber } from "../utils";
+import { add, remove, complete, generateRandomDelay } from "../utils";
 
  /**
   * This function returns a list of todos stored in the localstorage
@@ -6,7 +6,7 @@ import { add, remove, complete, generateRandomNumber } from "../utils";
 export const fetchTodos = () => {
     return new Promise((resolve, reject) => {
         const data = JSON.parse(localStorage.getItem('todo_store'));
-        const randomDelay = generateRandomNumber();
+        const randomDelay = generateRandomDelay();
 
         if(data){
             return setTimeout(() => resolve(data.todos), randomDelay)
@@ -28,7 +28,7 @@ export const saveTodo = todo => {
          * This should enable reject to be fired after adding 3 incomplete todos
          */
         const data = JSON.parse(localStorage.getItem('todo_store'))
-        const randomDelay = generateRandomNumber();
+        const randomDelay = generateRandomDelay();
 
         if(data.todos){
 
@@ -49,7 +49,7 @@ export const saveTodo = todo => {
  */
 export const removeTodo = id => {
     return new Promise((resolve, reject) => {
-        const randomDelay = generateRandomNumber();
+        const randomDelay = generateRandomDelay();
         // TODO We could make this more robust by checking if it's a valid id
         // and returning a corresponding error message
         if(id){
@@ -72,7 +72,7 @@ export const removeTodo = id => {
  */
 export const completeTodo = id => {
     return new Promise((resolve, reject) => {
-        const randomDelay = generateRandomNumber();
+        const randomDelay = generateRandomDelay();
         if(id){
             const data = JSON.parse(localStorage.getItem('todo_store'))
 

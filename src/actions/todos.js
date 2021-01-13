@@ -32,10 +32,6 @@ export const fetchTodoCreator = todos => {
     }
 }
 
-export const failureActionCreator = (type, error) => {
-    return { type, error }
-}
-
 // Async actions
 export const fetchTodos = () => {
     return async dispatch => {
