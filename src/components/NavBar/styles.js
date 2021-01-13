@@ -7,7 +7,7 @@ export const NavWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 0 24px;
-    height: 50px;
+    min-height: 50px;
 `
 
 export const HeaderText = styled.h1`

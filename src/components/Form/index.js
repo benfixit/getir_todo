@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Formik } from 'formik'
+import { CircularProgress } from '@material-ui/core'
 import CompDatePicker from '../DatePicker'
+import ProgressWrapper from '../ProgressWrapper';
+import Error from '../Error';
 import { TODO_STATUS } from '../../utils/constants'
 import { 
     DivGroup,
@@ -12,13 +15,14 @@ import {
     CancelButton,
     ButtonWrapper,
     StyledForm,
-    Error
+    StyledWrapper,
+    InfoWrapper
  } from './styles';
 import { addTodo } from '../../actions/todos';
 
 class Form extends React.Component{
 
-    handleSubmit = (values, actions) => {
+    handleSubmit = async (values, actions) => {
         const { onAdd, onModalClose } = this.props
         const { description, startDate, endDate } = values
         
@@ -29,12 +33,11 @@ class Form extends React.Component{
             status: TODO_STATUS.INCOMPLETE
         }
 
-        onAdd(newTodo)
+        await onAdd(newTodo);
 
         actions.setSubmitting(false);
 
-        onModalClose()
-
+        onModalClose();
     }
 
     validate = (values) => {
@@ -69,7 +72,8 @@ class Form extends React.Component{
                             handleChange, 
                             setFieldValue, 
                             values: { description, startDate, endDate }, 
-                            errors: { description: desc } 
+                            errors: { description: desc },
+                            isSubmitting
                         } = props
 
                         return (
@@ -83,6 +87,7 @@ class Form extends React.Component{
                                     onBlur={handleBlur}
                                     value={description}
                                     autoComplete="off"
+                                    autoFocus
                                 />
                                 {desc && <Error>{desc}</Error>}
                             </DivGroup>
@@ -110,10 +115,19 @@ class Form extends React.Component{
                                     dateFormat="MMMM d, yyyy"
                                 />
                             </DivGroup>
-                            <ButtonWrapper>
-                                <CancelButton type="button" onClick={onModalClose}>Cancel</CancelButton>
-                                <AddButton type="submit">Add Todo</AddButton>
-                            </ButtonWrapper>
+                            <StyledWrapper>
+                                <ButtonWrapper>
+                                    <CancelButton type="button" onClick={onModalClose}>Cancel</CancelButton>
+                                    <AddButton disabled={isSubmitting} type="submit">Add Todo</AddButton>
+                                </ButtonWrapper>
+                                <InfoWrapper>
+                                    {isSubmitting && (
+                                        <ProgressWrapper>
+                                            <CircularProgress color="inherit" />
+                                        </ProgressWrapper>
+                                    )}
+                                </InfoWrapper>
+                            </StyledWrapper>
                         </StyledForm>
                     )
                 }}
@@ -122,9 +136,9 @@ class Form extends React.Component{
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    onAdd: (payload) => dispatch(addTodo(payload))
-})
+const mapDispatchToProps = {
+    onAdd: addTodo
+}
 
 Form.propTypes = {
     onModalClose: PropTypes.func.isRequired,

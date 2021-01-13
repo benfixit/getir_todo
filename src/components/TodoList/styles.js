@@ -8,6 +8,7 @@ export const StyledList = styled.div`
     @media(max-width: 600px){
         width: 100%;
     }
+    padding-bottom: 24px;
 `
 
 export const ListHeader = styled.h3`
@@ -57,6 +58,8 @@ export const ListContent = styled.ul`
     background-color: #ffffff;
     padding: 24px 16px;
     height: 100%;
+    position: relative;
+    border-radius: 3px;
 `
 
 export const StyledDate = styled.div`

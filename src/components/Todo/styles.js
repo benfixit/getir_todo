@@ -20,7 +20,16 @@ export const StyledLi = styled.li`
     }
 `
 
-export const StyledP = styled.p``
+export const Description = styled.span`
+    flex: 1;
+`
+
+export const StyledWrapper = styled.div`
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+`
 
 export const TrashSpan = styled.span`
     margin-right: 8px;

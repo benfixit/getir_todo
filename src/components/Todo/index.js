@@ -1,44 +1,89 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { CircularProgress } from '@material-ui/core'
 import { FaTrashAlt, FaRegCircle, FaCheck } from "react-icons/fa";
-import { StyledLi, StyledP, TrashSpan, CheckSpan } from './styles'
+import { StyledLi, Description, StyledWrapper, TrashSpan, CheckSpan } from './styles'
+import ProgressWrapper from '../ProgressWrapper';
+import Error from '../Error';
 import { removeTodo, completeTodo } from '../../actions/todos';
 import { TODO_STATUS } from '../../utils/constants'
 
-const Todo = props => {
-    const { todo: { id, status, description }, onRemove, onComplete } = props;
+class Todo extends React.Component {
+    constructor(props){
+        super(props)
+
+        this.state = {
+            loading: false,
+            error: null
+        }
+    }
+
+    handleRemove = (id) => {
+        const { removeTodo } = this.props;
+        this.setState({ loading: true }, () => {
+            removeTodo(id).then(() => this.setState({ loading: false })).catch(error => this.setState({ error }))
+        });
+        
+    }
+
+    handleComplete = (id) => {
+        const { completeTodo } = this.props;
+        this.setState({ loading: true }, () => {
+            completeTodo(id).then(() => this.setState({ loading: false })).catch(error => this.setState({ error }))
+        });
+    }
+
+    componentWillUnmount() {
+        // fix Warning: Can't perform a React state update on an unmounted component
+        this.setState = () => {
+            return;
+        };
+    }
+
+    render(){
+        const { todo: { id, status, description } } = this.props;
+        const { loading, error } = this.state;
+        const { handleRemove, handleComplete } = this;
+
         const isIncomplete = status === TODO_STATUS.INCOMPLETE
-        return (
+        
+        return error ? <Error>{error}</Error> : (
             <StyledLi status={status}>
-                {description}
-                <StyledP>
-                    {isIncomplete && <TrashSpan data-testid={'removeTodo'} onClick={() => onRemove(id)}><FaTrashAlt /></TrashSpan>}
+                <Description>{description}</Description>
+                <StyledWrapper>
+                    {loading && (
+                        <ProgressWrapper>
+                            <CircularProgress color="inherit" />
+                        </ProgressWrapper>
+                    )}
+                    {isIncomplete && <TrashSpan data-testid={'removeTodo'} onClick={() => handleRemove(id)}><FaTrashAlt /></TrashSpan>}
                     <CheckSpan 
                         data-testid={'completeAction'}
-                        onClick={isIncomplete ? () => onComplete(id) : () => {}}
+                        onClick={isIncomplete ? () => handleComplete(id) : () => {}}
                         status={status}
                     >
                         {isIncomplete ? <FaCheck /> : <FaRegCircle />}
                     </CheckSpan>
-                </StyledP>
+                </StyledWrapper>
             </StyledLi>
         )
+    }
 }
 
-const mapDispatchToProps = dispatch => ({
-    onRemove: (id) => dispatch(removeTodo(id)),
-    onComplete: (id) => dispatch(completeTodo(id))
-})
+const mapDispatchToProps = {
+    removeTodo,
+    completeTodo
+}
 
 Todo.propTypes = {
-    onRemove: PropTypes.func.isRequired,
-    onComplete: PropTypes.func.isRequired,
+    removeTodo: PropTypes.func.isRequired,
+    completeTodo: PropTypes.func.isRequired,
     todo: PropTypes.shape({
         id: PropTypes.string,
         description: PropTypes.string,
-        startDate: PropTypes.instanceOf(Date),
-        endDate: PropTypes.instanceOf(Date),
+        startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
+        endDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
         status: PropTypes.string
     }).isRequired
 }

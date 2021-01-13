@@ -1,35 +1,16 @@
-import { TODO_ACTIONS, TODO_STATUS } from '../utils/constants';
+import { TODO_ACTIONS } from '../utils/constants';
+import { add, remove, complete } from "../utils";
 
 const todos = (state, action) => {
     switch(action.type){
         case TODO_ACTIONS.ADD_TODO:
-            return {
-                ...state,
-                todos: [
-                    ...state.todos,
-                    {
-                        id: action.id,
-                        description: action.description,
-                        startDate: action.startDate,
-                        endDate: action.endDate,
-                        status: action.status
-                    }
-                ]
-            }
+            return {...state, todos: add(state.todos, action)}
         case TODO_ACTIONS.REMOVE_TODO:
-            return {
-                ...state,
-                todos: state.todos.filter(todo => todo.id !== action.id)
-            }
+            return {...state, todos: remove(state.todos, action.id)}
         case TODO_ACTIONS.COMPLETE_TODO:
-            const todo = state.todos.find(todo => todo.id === action.id)
-            return {
-                ...state,
-                todos: [
-                    ...state.todos.filter(todo => todo.id !== action.id),
-                    {...todo, status: TODO_STATUS.COMPLETE }
-                ]
-            }
+            return {...state, todos: complete(state.todos, action.id)}
+        case TODO_ACTIONS.FETCH_TODOS:
+            return {...state, todos: action.todos}
         default:
             return state
     }

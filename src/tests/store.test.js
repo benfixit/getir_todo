@@ -1,4 +1,4 @@
-import storeFactory from '../store'
+import storeFactory from '../store/factory'
 import { addTodo, removeTodo } from '../actions/todos'
 import { TODO_STATUS } from '../utils/constants'
 

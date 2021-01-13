@@ -28,8 +28,8 @@ export const StyledInput = styled.input`
 `
 
 export const ButtonWrapper = styled.div`
-    width: 100%;
     display: flex;
+    flex: 1;
 `
 
 export const Button = styled.button`
@@ -61,7 +61,18 @@ export const CancelButton = styled(Button)`
 export const StyledForm = styled.form`
 `
 
-export const Error = styled.span`
-    color: #cc0000;
-    font-size: 12px;
+export const StyledWrapper = styled.div`
+    display: flex;
+    @media(max-width: 600px){
+        flex-direction: column;
+    }
+`
+
+export const InfoWrapper = styled.div`
+    position: relative;
+    flex: 1;
+    @media(max-width: 600px){
+        margin-top: 10px;
+        min-height: 40px;
+    }
 `

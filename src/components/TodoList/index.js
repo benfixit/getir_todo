@@ -2,8 +2,12 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { isSameDay, format } from 'date-fns'
+import { CircularProgress } from '@material-ui/core'
 import Todo from '../Todo'
 import CompDatePicker from '../DatePicker'
+import ProgressWrapper from '../ProgressWrapper';
+import Error from '../Error';
+import { fetchTodos } from '../../actions/todos';
 import { 
     StyledList, 
     ListContent, 
@@ -23,22 +27,30 @@ class TodoList extends React.Component{
         super(props);
     
         this.state = {
-          viewDate: new Date()
+          viewDate: new Date(),
+          loading: true,
+          error: null
         }
       }
+
+    componentDidMount(){
+        const { fetchTodos } = this.props;
+
+        fetchTodos().then(() => this.setState({ loading: false })).catch(error => this.setState({ error }))
+    }
 
     handleViewDate = date => {
         this.setState({
             viewDate: date
-        })
+        });
     }
 
     render(){
         const { handleViewDate } = this;
-        const { viewDate } = this.state;
+        const { viewDate, loading, error } = this.state;
         const { todos } = this.props
 
-        const displayedTodos = todos.filter(todo => isSameDay(todo.startDate, viewDate) || (todo.startDate <= viewDate && todo.endDate >= viewDate))
+        const displayedTodos = todos.filter(todo => isSameDay(new Date(todo.startDate), viewDate) || (todo.startDate <= viewDate && todo.endDate >= viewDate))
 
         return(
             <Fragment>
@@ -62,11 +74,21 @@ class TodoList extends React.Component{
                         </DayName>
                     </ListHeader>
                     <ListContent>
-                        {displayedTodos.length > 0 ? displayedTodos.map(todo => {
-                            return (
-                                <Todo key={todo.id} todo={todo} />
-                            )
-                        }) : <NoAvailableTodos>You do not have any todos for the selected date.</NoAvailableTodos>}
+                        {error ? <Error>{error}</Error> : (
+                            <Fragment>
+                                {loading ? (
+                                    <ProgressWrapper>
+                                        <CircularProgress color="inherit" />
+                                    </ProgressWrapper>
+                                ) : (
+                                    displayedTodos.length > 0 ? displayedTodos.map(todo => {
+                                        return (
+                                            <Todo key={todo.id} todo={todo} />
+                                        )
+                                    }) : <NoAvailableTodos>You do not have any todos for the selected date.</NoAvailableTodos>
+                                )}
+                            </Fragment>
+                        )}
                     </ListContent>
                 </StyledList>
                 <StyledDate>
@@ -81,6 +103,10 @@ class TodoList extends React.Component{
     }
 }
 
+const mapDispatchToProps = {
+    fetchTodos
+}
+
 const mapStateToProps = state => ({
     todos: state.todos
 })
@@ -90,11 +116,11 @@ TodoList.propTypes = {
         PropTypes.shape({
             id: PropTypes.string,
             description: PropTypes.string,
-            startDate: PropTypes.instanceOf(Date),
-            endDate: PropTypes.instanceOf(Date),
+            startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
+            endDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
             status: PropTypes.string
         })
     ).isRequired
 }
 
-export default connect(mapStateToProps, null)(TodoList);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
