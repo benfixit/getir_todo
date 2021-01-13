@@ -1,10 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { format } from 'date-fns';
-import { StateMock } from '@react-mock/state';
 import { render, screen } from './utils';
 import TodoList from '../components/TodoList';
-import { todos as mockTodos } from './__mocks__/todos';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
