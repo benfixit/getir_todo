@@ -47,14 +47,14 @@ class Todo extends React.Component {
         const { handleRemove, handleComplete } = this;
 
         const isIncomplete = status === TODO_STATUS.INCOMPLETE
-        
+
         return error ? <Error>{error}</Error> : (
             <StyledLi status={status}>
                 <Description>{description}</Description>
                 <StyledWrapper>
                     {loading && (
                         <ProgressWrapper>
-                            <CircularProgress color="inherit" />
+                            <CircularProgress color="inherit" style={{ width: '20px', height: '20px' }} />
                         </ProgressWrapper>
                     )}
                     {isIncomplete && <TrashSpan data-testid={'removeTodo'} onClick={() => handleRemove(id)}><FaTrashAlt /></TrashSpan>}

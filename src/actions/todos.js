@@ -42,6 +42,11 @@ export const fetchTodos = () => {
         return lsFetchTodos().then(response => {
             dispatch(fetchTodoCreator(response));
         }).catch(error => {
+            /**
+             * If it were an app level error, an action could be dispatched here, so that the error lives in the store
+             * But I am re-throwing it here because I want to handle it at the component level. 
+             * The errors in this project are mostly component-level errors
+             */
             throw error
         })
     }

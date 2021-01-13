@@ -1,4 +1,4 @@
-import { add, remove, complete } from "../utils";
+import { add, remove, complete, generateRandomNumber } from "../utils";
 
  /**
   * This function returns a list of todos stored in the localstorage
@@ -6,12 +6,13 @@ import { add, remove, complete } from "../utils";
 export const fetchTodos = () => {
     return new Promise((resolve, reject) => {
         const data = JSON.parse(localStorage.getItem('todo_store'));
+        const randomDelay = generateRandomNumber();
 
         if(data){
-            return setTimeout(() => resolve(data.todos), 1000)
+            return setTimeout(() => resolve(data.todos), randomDelay)
         }
 
-        return setTimeout(() => reject("Oops! Store not available.", 1000));
+        return setTimeout(() => reject("Oops! Store not available.", randomDelay));
     })
 }
 
@@ -27,6 +28,7 @@ export const saveTodo = todo => {
          * This should enable reject to be fired after adding 3 incomplete todos
          */
         const data = JSON.parse(localStorage.getItem('todo_store'))
+        const randomDelay = generateRandomNumber();
 
         if(data.todos){
 
@@ -34,10 +36,10 @@ export const saveTodo = todo => {
 
             localStorage.setItem('todo_store', JSON.stringify(newData))
 
-            return setTimeout(() => resolve(todo), 1000)
+            return setTimeout(() => resolve(todo), randomDelay)
         }
 
-        return setTimeout(() => reject("Memory full. Delete some incomplete todos to add more."), 1000)
+        return setTimeout(() => reject("Memory full. Delete some incomplete todos to add more."), randomDelay)
     })
 }
 
@@ -47,6 +49,7 @@ export const saveTodo = todo => {
  */
 export const removeTodo = id => {
     return new Promise((resolve, reject) => {
+        const randomDelay = generateRandomNumber();
         // TODO We could make this more robust by checking if it's a valid id
         // and returning a corresponding error message
         if(id){
@@ -56,10 +59,10 @@ export const removeTodo = id => {
     
             localStorage.setItem('todo_store', JSON.stringify(newData))
     
-            return setTimeout(() => resolve(id), 1000)
+            return setTimeout(() => resolve(id), randomDelay)
         }
 
-        return setTimeout(() => reject("Please select a todo to remove"), 1000)
+        return setTimeout(() => reject("Please select a todo to remove"), randomDelay)
     })
 }
 
@@ -69,6 +72,7 @@ export const removeTodo = id => {
  */
 export const completeTodo = id => {
     return new Promise((resolve, reject) => {
+        const randomDelay = generateRandomNumber();
         if(id){
             const data = JSON.parse(localStorage.getItem('todo_store'))
 
@@ -76,9 +80,9 @@ export const completeTodo = id => {
 
             localStorage.setItem('todo_store', JSON.stringify(newData))
 
-            return setTimeout(() => resolve(id), 1000)
+            return setTimeout(() => resolve(id), randomDelay)
         }
 
-        return setTimeout(() => reject("Please select a todo to mark as complete"), 1000)
+        return setTimeout(() => reject("Please select a todo to mark as complete"), randomDelay)
     })
 }

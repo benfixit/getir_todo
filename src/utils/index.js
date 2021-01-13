@@ -1,7 +1,7 @@
 import { TODO_STATUS } from './constants'
 
 /**
- * These functions help extract the logic that is shared between the localstorage apis and the todo reducer
+ * These functions (add, remove and complete) help extract the logic that is shared between the localstorage apis and the todo reducer
  */
 
 export const add = (todos, todo) => {
@@ -18,4 +18,13 @@ export const complete = (todos, id) => {
     const newTodos = [...todos.filter(todo => todo.id !== id), {...todo, status: TODO_STATUS.COMPLETE }]
 
     return newTodos;
+}
+
+/**
+ * This function generates a random number between 500 and 1000 exclusive
+ */
+export const generateRandomNumber = () => {
+    const rand = 1 + Math.random();
+    
+    return 500 * (parseFloat(rand.toFixed(2)))
 }
